@@ -59,6 +59,13 @@ shared package is that it accretes until nobody can change it:
 If a rule here would change how anything below the bar looks, it does not belong
 here. The test of a proposed addition is not "is it shared" but "is it the bar".
 
+**Two things sit in the bar and are still not here.** The typeface, because
+loading a font is the application's job and this file only asks to inherit it
+(Inter, weights 400 500 600 700 800). And the signed-in person's name and
+sign-out control, because they appear in exactly one application: the platform
+itself owns identity, which is precisely why no tool shows an account. Something
+that exists in one place cannot drift between six, so it stays where it is.
+
 ## It brings its own names for its colours
 
 Every value the stylesheet needs is declared inside it, prefixed `--pui-`:
@@ -90,16 +97,60 @@ one application getting one line of this wrong.
 ```html
 <header class="pui-bar">
   <div class="pui-bar-in">
-    <div class="pui-sw">...the name, the chevron, the panel...</div>
+
+    <div class="pui-sw" data-switcher>
+      <button class="pui-sw-btn" type="button" aria-expanded="false"
+              aria-haspopup="true" aria-controls="suiteMenu">
+        <span class="pui-sw-name">This Tool<span class="pui-sw-dot">.</span></span>
+        <svg class="pui-sw-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </button>
+
+      <div class="pui-sw-menu" id="suiteMenu" hidden>
+        <!-- The way back. Every tool carries it; the platform itself does not,
+             and uses <div class="pui-sw-lbl">Tools</div> in its place. -->
+        <a class="pui-sw-hub" href="https://platform.example.com/">
+          <span class="pui-sw-eyebrow">Back to</span>
+          <span class="pui-sw-hubname">Marketing Hub
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"
+                 stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M9 6l6 6-6 6"/>
+            </svg>
+          </span>
+        </a>
+
+        <div class="pui-sw-list">
+          <a class="pui-sw-item" href="https://sibling.example.com/">
+            <span class="pui-sw-ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">…</svg></span>
+            <span><span class="pui-sw-t">A Sibling</span><span class="pui-sw-s">What it does, in a few words</span></span>
+          </a>
+          <!-- The tool you are standing in: a span, never a link -->
+          <span class="pui-sw-item pui-here">
+            <span class="pui-sw-ic"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">…</svg></span>
+            <span><span class="pui-sw-t">This Tool</span><span class="pui-sw-s">What it does, in a few words</span></span>
+          </span>
+        </div>
+      </div>
+    </div>
+
     <nav class="pui-tabs">          <!-- ONE wrapper. This is the load-bearing line -->
       <a class="pui-tab pui-on" href="/">First</a>
       <a class="pui-tab" href="/second">Second</a>
     </nav>
+
     <div class="pui-spacer"></div>
     <img class="pui-mark" src="/bb-mark.svg" alt="BrandBastion" width="28" height="28">
   </div>
 </header>
 ```
+
+The panel opens and closes from your own script: set `data-open` on `.pui-sw`,
+drop `hidden` from the menu, and mirror `aria-expanded` on the button. Click
+outside and Escape both close it. The menu starts `hidden` so a page rendered
+before its script runs shows a closed bar rather than an open panel lying over
+the screen.
 
 **The tabs go inside one wrapper**, and that wrapper is a single child of the bar.
 The bar separates its own children with a 30px gap; a tab placed directly in the

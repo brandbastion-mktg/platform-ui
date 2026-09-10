@@ -1,0 +1,15 @@
+{
+  "name": "@brandbastion-mktg/platform-ui",
+  "version": "1.0.0",
+  "description": "The shared top bar every application in the suite carries: one stylesheet, no dependencies, no build step.",
+  "license": "MIT",
+  "files": [
+    "header.css",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brandbastion-mktg/platform-ui.git"
+  }
+}

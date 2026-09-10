@@ -1,0 +1,220 @@
+/* ============================================================================
+   platform-ui: the bar every application in the suite carries.
+
+   The tool's own name IS the switcher, the tabs sit beside it, and the mark
+   closes the bar on the right. Link this ABOVE your own stylesheet, then use
+   the markup in the README. There is no build step and no dependency.
+
+   Every value here was decided once, from options rendered at real size, after
+   an audit measured six hand-written copies of this bar side by side and found
+   eleven differences. Where a number ends a specific drift, the comment says
+   which, because a number with no reason attached is the first thing somebody
+   changes back.
+   ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   ITS OWN NAMES FOR ITS OWN COLOURS.
+
+   Everything below reads a `--pui-` variable and never an application's own.
+   The applications spell the same colour three different ways: one calls the
+   house blue `--blue`, another `--accent`, a third something else again. A
+   shared file that picked any one of those spellings would render wrong in the
+   others, silently, and could not be adopted anywhere without renaming every
+   colour in that application first.
+
+   To make the bar follow an application's own palette, redefine one of these in
+   that application's stylesheet, which loads after this file.
+   --------------------------------------------------------------------------- */
+:root{
+  --pui-blue:#0066e6;      /* the house blue: the full stop, the current tab, the open state */
+  --pui-navy:#1c2c73;      /* the way back to the platform. NEVER the blue above, and never
+                              blue-dark: two applications rendered it #0850c4 until 2026-09-10
+                              because each named the wrong colour in its own token block */
+  --pui-tint:#eaf1fe;      /* the blue wash behind the open switcher and the current tool */
+  --pui-ink:#13151b;       /* text at full strength: the tool's name, a tab on hover */
+  --pui-mid:#5b616e;       /* a tab at rest, a menu icon */
+  --pui-dim:#9aa0ab;       /* the chevron, a tool's one-line description */
+  --pui-line:#e7e9ee;      /* every hairline in the panel */
+  --pui-bg:#f5f6f8;        /* the page behind the bar, reused as the hover wash */
+  --pui-surface:#fff;      /* the bar and the panel. Solid, never translucent, never blurred */
+  --pui-eyebrow:#6c86bd;   /* the small word above the way back */
+
+  --pui-page:1400px;       /* the same width the page content uses, so the tool's name starts on
+                              the same pixel as the first card underneath it */
+  --pui-gutter:28px;       /* and the same side padding, for the same reason */
+  --pui-bar-h:78px;
+
+  /* The bar sits above the page and below anything the page opens on top of it.
+     Raise it in an application that stacks something between the two. */
+  --pui-bar-z:30;
+}
+
+/* ---------------------------------------------------------------------------
+   THE BAR
+   --------------------------------------------------------------------------- */
+
+/* Sticky in every application without exception. One application's bar was
+   static until 2026-09-10, so its bar scrolled away while five others stayed,
+   and the tab you would use to leave went with it.
+
+   A soft shadow separates the bar, never a hairline border. `padding` and
+   `border` are reset explicitly because an application that styles the bare
+   <header> element for something else will otherwise inherit it here: one did,
+   and its 78px bar rendered 112px tall on that application and nowhere else. */
+.pui-bar{
+  position:sticky; top:0; z-index:var(--pui-bar-z);
+  background:var(--pui-surface);
+  box-shadow:0 1px 0 rgba(19,21,27,.05), 0 10px 26px -22px rgba(19,21,27,.30);
+  padding:0; margin:0; border:0; border-radius:0;
+}
+
+/* The bar is full width; its CONTENTS sit in the page's own container.
+   The 30px gap separates the bar's OWN pieces: the switcher, the tabs, the
+   spacer, the mark. It must never reach an individual tab, which is what the
+   `.pui-tabs` wrapper exists to prevent. See the note there. */
+.pui-bar-in{
+  max-width:var(--pui-page); margin:0 auto;
+  height:var(--pui-bar-h); padding:0 var(--pui-gutter);
+  display:flex; align-items:center; gap:30px;
+}
+
+.pui-spacer{flex:1}
+
+/* The real mark, quiet, closing the bar. Same file in every application. */
+.pui-mark{height:28px; width:auto; opacity:.95; flex:0 0 auto; align-self:center; display:block}
+
+/* ---------------------------------------------------------------------------
+   THE SWITCHER: the tool's own name is the control
+   --------------------------------------------------------------------------- */
+
+.pui-sw{position:relative; flex:0 0 auto; align-self:center}
+
+/* `width`, `color`, `box-shadow` and `font-family` are stated rather than left
+   to inherit: an application that styles every bare <button> as its own primary
+   button turns this into a full-width blue block otherwise, and buttons do not
+   inherit the page's typeface on their own. */
+.pui-sw-btn{
+  display:flex; align-items:center; gap:11px;
+  width:auto; height:48px; padding:0 12px 0 13px; margin-left:-13px;
+  border:0; border-radius:14px; background:transparent; color:var(--pui-ink);
+  box-shadow:none; font-family:inherit; cursor:pointer; transition:background .15s;
+}
+.pui-sw-name{font-size:23px; font-weight:800; letter-spacing:-.035em; line-height:1; white-space:nowrap}
+.pui-sw-dot{color:var(--pui-blue)}
+
+/* The chevron is the whole affordance: it is the one mark that says this is a
+   control rather than a label. */
+.pui-sw-chev{
+  width:17px; height:17px; color:var(--pui-dim); flex:0 0 auto;
+  transition:transform .2s cubic-bezier(.2,.7,.3,1), color .15s;
+}
+.pui-sw-btn:hover{background:var(--pui-bg)}
+.pui-sw-btn:hover .pui-sw-chev{color:var(--pui-mid)}
+.pui-sw[data-open] .pui-sw-btn{background:var(--pui-tint)}
+.pui-sw[data-open] .pui-sw-chev{transform:rotate(180deg); color:var(--pui-blue)}
+
+/* A panel, not a dropdown: 18px corners, a hairline, a deep soft shadow.
+   `[hidden]` is stated here so the panel is closed before any script runs even
+   in an application whose reset does not cover it. */
+.pui-sw-menu{
+  position:absolute; top:60px; left:-13px; width:372px; z-index:60;
+  background:var(--pui-surface); border:1px solid var(--pui-line);
+  border-radius:18px; overflow:hidden;
+  box-shadow:0 1px 2px rgba(19,21,27,.04), 0 22px 50px -20px rgba(19,21,27,.30);
+}
+.pui-sw-menu[hidden]{display:none}
+
+/* The way back, at the top of every TOOL's panel. The platform's own panel has
+   no band, because home has nowhere back to; it carries `.pui-sw-lbl` instead. */
+.pui-sw-hub{
+  display:block; padding:17px 22px; text-decoration:none; color:inherit;
+  background:linear-gradient(180deg,#eef4fe,#f7faff);
+  border-bottom:1px solid var(--pui-line);
+}
+.pui-sw-hub:hover{background:linear-gradient(180deg,#e6eefd,#f2f7ff)}
+.pui-sw-eyebrow{
+  display:block; font-size:11px; font-weight:700; letter-spacing:.085em;
+  text-transform:uppercase; color:var(--pui-eyebrow);
+}
+.pui-sw-hubname{
+  display:flex; align-items:center; gap:9px; margin-top:5px;
+  font-size:19px; font-weight:800; letter-spacing:-.03em; color:var(--pui-navy);
+}
+.pui-sw-hubname svg{width:16px; height:16px; color:var(--pui-blue)}
+
+/* The small word above the list, used only where there is no band above it. */
+.pui-sw-lbl{
+  font-size:10.5px; font-weight:700; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--pui-dim); padding:15px 22px 4px;
+}
+
+.pui-sw-list{padding:10px}
+/* A list that follows the small word starts tighter: the word has already paid
+   for the space above it. */
+.pui-sw-lbl + .pui-sw-list{padding-top:6px}
+
+.pui-sw-item{
+  display:flex; align-items:center; gap:14px; padding:12px; border-radius:14px;
+  text-decoration:none; color:inherit; transition:background .13s;
+}
+a.pui-sw-item:hover{background:var(--pui-bg)}
+.pui-sw-ic{
+  width:38px; height:38px; border-radius:11px; background:var(--pui-bg); color:var(--pui-mid);
+  display:grid; place-items:center; flex:0 0 auto;
+}
+.pui-sw-ic svg{width:18px; height:18px}
+.pui-sw-t{display:block; font-size:15px; font-weight:700; letter-spacing:-.02em; line-height:1.25}
+.pui-sw-s{display:block; font-size:12.5px; color:var(--pui-dim); line-height:1.4; margin-top:3px}
+
+/* The tool you are standing in. It is drawn as a `span`, never a link: a link
+   to where you already are is a small lie. */
+.pui-sw-item.pui-here .pui-sw-ic{background:var(--pui-tint); color:var(--pui-blue)}
+.pui-sw-item.pui-here .pui-sw-t{color:var(--pui-blue)}
+.pui-sw-item.pui-here .pui-sw-t::after{
+  content:""; display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--pui-blue); margin-left:8px; vertical-align:middle;
+}
+/* A tool that exists but has no address configured yet. */
+.pui-sw-item.pui-off{opacity:.55}
+
+/* ---------------------------------------------------------------------------
+   THE TABS
+
+   ONE WRAPPER, AND IT IS LOAD-BEARING. The bar separates its own children with
+   30px. A tab placed directly in the bar becomes one of those children and
+   inherits that gap ON TOP of its own padding: that is exactly how one
+   application ended up with its tabs 58px apart while another's sat 28px, with
+   both stylesheets agreeing on every number they contained.
+   --------------------------------------------------------------------------- */
+
+/* No gap here. The spacing is the tabs' own padding and nothing else. */
+.pui-tabs{display:flex; align-items:stretch; align-self:stretch; flex:0 0 auto}
+
+/* 30px between one word and the next, as 15px each side. Chosen from four live
+   spacings on 2026-09-10: it is the only one already proven on a seven-tab bar,
+   and the middle of what existed, so five of six applications moved by two
+   pixels or less.
+
+   A tab is a LINK with a real address, never a button. A button has no address,
+   so it cannot be opened in a new tab, bookmarked, or returned to. */
+.pui-tab{
+  position:relative; display:flex; align-items:center; padding:0 15px;
+  font-size:14.5px; font-weight:600; color:var(--pui-mid);
+  text-decoration:none; white-space:nowrap; transition:color .13s;
+}
+.pui-tab:hover{color:var(--pui-ink)}
+
+/* The underline rests on the bar's BOTTOM edge, never tucked under the word,
+   and runs 4px past the word on each side: 15px of padding less 11px of inset.
+   At 2px it stops where the letters do and reads as clipped rather than
+   deliberate. Hover is a colour change only; there is no hover underline. */
+.pui-tab::after{
+  content:""; position:absolute; left:11px; right:11px; bottom:-1px; height:2px;
+  border-radius:2px 2px 0 0; background:transparent; transition:background .13s;
+}
+.pui-tab.pui-on{color:var(--pui-blue); font-weight:700}
+.pui-tab.pui-on::after{background:var(--pui-blue)}
+
+@media (prefers-reduced-motion:reduce){
+  .pui-bar *{transition:none !important}
+}
