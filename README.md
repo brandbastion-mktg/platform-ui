@@ -1,10 +1,12 @@
 # platform-ui
 
-The stylesheet an application links so that its top bar is the same bar every
-other application in the suite has: the tool's own name as the switcher, the
-tabs beside it, the mark closing the bar on the right.
+Two files an application installs so that its top bar is the same bar every other
+application in the suite has: the tool's own name as the switcher, the tabs
+beside it, the mark closing the bar on the right, and the same five tools listed
+in the same order behind the name.
 
-One file, no dependencies, no build step. It is the visual half of what
+`header.css` is how the bar looks. `tools.mjs` is which tools exist and what each
+one is called. No dependencies, no build step. It is the visual half of what
 [`platform-auth`](https://github.com/brandbastion-mktg/platform-auth) is for
 behaviour: sign-in makes the applications one product to a person, and this makes
 them look like it.
@@ -32,7 +34,7 @@ Not published to a registry. Depend on a tagged version by URL:
 ```json
 {
   "dependencies": {
-    "@brandbastion-mktg/platform-ui": "https://github.com/brandbastion-mktg/platform-ui/archive/refs/tags/v1.0.0.tar.gz"
+    "@brandbastion-mktg/platform-ui": "https://github.com/brandbastion-mktg/platform-ui/archive/refs/tags/v1.1.0.tar.gz"
   }
 }
 ```
@@ -42,7 +44,17 @@ shell out to `git`, which is absent from slim container images, so the dependenc
 resolves on a laptop and fails inside the build. That lesson is borrowed from
 `platform-auth`, which learned it the expensive way.
 
-Then serve `header.css` as a static asset and link it above your own stylesheet.
+Then serve `header.css` as a static asset and link it above your own stylesheet,
+and import the suite list where the menu is built:
+
+```js
+import { TOOLS, toolIcon } from '@brandbastion-mktg/platform-ui/tools.mjs';
+```
+
+`TOOLS` is the fleet in its one order. Each entry has `id`, `name`, `line` (the
+one-liner in the menu), `about` (the longer sentence the platform's launcher card
+shows) and `icon`. Read the ADDRESS for a tool from your own config, keyed by the
+same `id`; the list deliberately carries no addresses.
 
 ## What may live here, and nothing else
 
@@ -50,11 +62,25 @@ A closed list, written before the first line, because the predicted failure of a
 shared package is that it accretes until nobody can change it:
 
 1. **The bar and the menu behind the tool's name.** Its layout, its type, its
-   colours, its states, and the panel that opens under it.
-2. **Nothing else.** No buttons, no forms, no tables, no cards, no page layout,
+   colours, its states, and the panel that opens under it. That is `header.css`.
+2. **Which tools exist, and what each one is called.** Their ids, names, the line
+   under the name, the sentence the platform's launcher card shows, and their
+   glyphs. That is `tools.mjs`, added at 1.1.0 for the same reason as the
+   stylesheet: the same five rows were written out in six repositories, so
+   renaming one tool took six of them and one said the old name for two days
+   afterwards with nothing able to notice. It is not a widening of this list: the
+   menu's CONTENTS are the menu.
+3. **Nothing else.** No buttons, no forms, no tables, no cards, no page layout,
    no utility classes, no reset, no fonts. An application's own screens are its
    own, deliberately: the applications have genuinely different jobs and should
    not be forced into one another's shape.
+
+Three things are deliberately NOT in `tools.mjs`, and each would be a mistake to
+add. **Addresses**, because every application already reads those from its own
+configuration keyed by the same ids, which is what makes a domain move a settings
+change rather than six deploys. **Who may open what**, because grants belong to
+the platform alone; this file says a tool exists, never that anybody may use it.
+And **the pages inside a tool**, which are tied to grants rather than to display.
 
 If a rule here would change how anything below the bar looks, it does not belong
 here. The test of a proposed addition is not "is it shared" but "is it the bar".
