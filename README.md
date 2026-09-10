@@ -34,7 +34,7 @@ Not published to a registry. Depend on a tagged version by URL:
 ```json
 {
   "dependencies": {
-    "@brandbastion-mktg/platform-ui": "https://github.com/brandbastion-mktg/platform-ui/archive/refs/tags/v1.1.0.tar.gz"
+    "@brandbastion-mktg/platform-ui": "https://github.com/brandbastion-mktg/platform-ui/archive/refs/tags/v1.1.1.tar.gz"
   }
 }
 ```

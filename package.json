@@ -1,17 +1,21 @@
 {
   "name": "@brandbastion-mktg/platform-ui",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The shared top bar every application in the suite carries, and the one list of which tools exist: one stylesheet, one data file, no dependencies, no build step.",
   "license": "MIT",
   "//exports": "Only the stylesheet and the suite list are reachable, on purpose: the closed list in the README says what may live here, and a package that can be reached into is a package that grows. An application resolves the real path with createRequire(import.meta.url).resolve('@brandbastion-mktg/platform-ui/header.css') and serves it from there, so there is never a second copy of it on disk; tools.mjs is imported normally.",
   "exports": {
     "./header.css": "./header.css",
-    "./tools.mjs": "./tools.mjs",
+    "./tools.mjs": {
+      "types": "./tools.d.mts",
+      "default": "./tools.mjs"
+    },
     "./package.json": "./package.json"
   },
   "files": [
     "header.css",
     "tools.mjs",
+    "tools.d.mts",
     "README.md",
     "LICENSE"
   ],
