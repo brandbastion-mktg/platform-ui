@@ -34,7 +34,7 @@ Not published to a registry. Depend on a tagged version by URL:
 ```json
 {
   "dependencies": {
-    "@brandbastion-mktg/platform-ui": "https://github.com/brandbastion-mktg/platform-ui/archive/refs/tags/v1.1.1.tar.gz"
+    "@brandbastion-mktg/platform-ui": "https://github.com/brandbastion-mktg/platform-ui/archive/refs/tags/v1.1.2.tar.gz"
   }
 }
 ```
@@ -191,8 +191,10 @@ in a new tab, bookmarked, or returned to.
 
 Semantic, and the tag is the whole delivery mechanism.
 
-- **Patch** for a fix that changes no measurement.
-- **Minor** for a value that moves by a pixel or two, or a new state.
+- **Patch** for a fix that changes no measurement, and for any wording in the
+  suite list: a tool's name, its menu line or its launcher sentence.
+- **Minor** for a value that moves by a pixel or two, a new state, or a tool
+  joining or leaving the suite list.
 - **Major** for anything that requires an application to change its markup.
 
 An application takes a new version by bumping the URL above. Nothing updates

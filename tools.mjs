@@ -53,7 +53,7 @@ export const TOOLS = [
   {
     id: 'comment',
     name: 'Comment Blindspot',
-    line: 'What is sitting under the ads',
+    line: 'Ad comments, read and graded',
     about: 'Reads the comments under a brand’s ads and grades what is there.',
     icon: '<path d="M20.5 4.5H9.8a2.3 2.3 0 0 0-2.3 2.3v5.1a2.3 2.3 0 0 0 2.3 2.3h1.1v2.6a.55.55 0 0 0 .93.4l3.1-3h5.57a2.3 2.3 0 0 0 2.3-2.3V6.8a2.3 2.3 0 0 0-2.3-2.3z" opacity=".38" transform="translate(-1.2 -1.1)"/><path d="M13.9 8.2H4.6A2.6 2.6 0 0 0 2 10.8v5.3a2.6 2.6 0 0 0 2.6 2.6h1.1v2.6a.6.6 0 0 0 1.02.43l3.06-3.03h4.12a2.6 2.6 0 0 0 2.6-2.6v-5.3a2.6 2.6 0 0 0-2.6-2.6z"/>',
   },
