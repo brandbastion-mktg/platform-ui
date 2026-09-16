@@ -200,3 +200,14 @@ Semantic, and the tag is the whole delivery mechanism.
 An application takes a new version by bumping the URL above. Nothing updates
 itself, on purpose: a stylesheet that changed under a running application would
 be a deploy nobody made.
+
+## Who changes this
+
+The Marketing Hub session (the owner's decision, 2026-09-16). This package is
+part of the shared layer between the Hub and the tools, and that layer's home is
+the Hub: a change here is made from a Marketing Hub session, on a branch and
+pull request in this repository, released as a new tag, and then taken by the
+whole fleet at once, since every application is expected to name the same
+version. A tool's own session takes the version; it does not change the
+package. The rule every session reads is in `/bb:start`, the shared session
+toolbox.
