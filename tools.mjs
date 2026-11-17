@@ -57,13 +57,9 @@ export const TOOLS = [
     about: 'Reads the comments under a brand’s ads and grades what is there.',
     icon: '<path d="M20.5 4.5H9.8a2.3 2.3 0 0 0-2.3 2.3v5.1a2.3 2.3 0 0 0 2.3 2.3h1.1v2.6a.55.55 0 0 0 .93.4l3.1-3h5.57a2.3 2.3 0 0 0 2.3-2.3V6.8a2.3 2.3 0 0 0-2.3-2.3z" opacity=".38" transform="translate(-1.2 -1.1)"/><path d="M13.9 8.2H4.6A2.6 2.6 0 0 0 2 10.8v5.3a2.6 2.6 0 0 0 2.6 2.6h1.1v2.6a.6.6 0 0 0 1.02.43l3.06-3.03h4.12a2.6 2.6 0 0 0 2.6-2.6v-5.3a2.6 2.6 0 0 0-2.6-2.6z"/>',
   },
-  {
-    id: 'desk',
-    name: 'AI Desk',
-    line: 'Enforced AI writing workflows',
-    about: 'The library and logbook for enforced AI writing workflows: runs happen in Claude Code, the desk holds the prompts and every run.',
-    icon: '<rect x="3" y="14.6" width="18" height="4.8" rx="1.7"/><rect x="4.7" y="9.3" width="14.6" height="4" rx="1.5" opacity=".5"/><rect x="6.4" y="4.6" width="11.2" height="3.5" rx="1.4" opacity=".28"/>',
-  },
+  // AI Desk sat here until 2026-11-17, when the project was cancelled and the
+  // tool deleted (Sina's call). Its id `desk` is retired with it: never reuse it
+  // for another tool, because old grants and old links may still carry it.
   {
     id: 'events',
     name: 'Event Radar',

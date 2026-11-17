@@ -2,7 +2,7 @@
 
 Two files an application installs so that its top bar is the same bar every other
 application in the suite has: the tool's own name as the switcher, the tabs
-beside it, the mark closing the bar on the right, and the same five tools listed
+beside it, the mark closing the bar on the right, and the same four tools listed
 in the same order behind the name.
 
 `header.css` is how the bar looks. `tools.mjs` is which tools exist and what each
@@ -34,7 +34,7 @@ Not published to a registry. Depend on a tagged version by URL:
 ```json
 {
   "dependencies": {
-    "@brandbastion-mktg/platform-ui": "https://github.com/brandbastion-mktg/platform-ui/archive/refs/tags/v1.1.2.tar.gz"
+    "@brandbastion-mktg/platform-ui": "https://github.com/brandbastion-mktg/platform-ui/archive/refs/tags/v1.2.0.tar.gz"
   }
 }
 ```
